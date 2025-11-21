@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Unsplash Gallery</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="Js/unsplash.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Meo MEo</h1>
+            <p>Galeri Foto Berkualitas Tinggi dari Unsplash API</p>
+        </header>
+
+        <div id="loading" class="loading">Memuat gambar...</div>
+        <div id="error" class="error" style="display: none;"></div>
+        <div id="gallery" class="gallery"></div>
+        
+        <div class="load-more-container">
+            <button id="loadMoreBtn" class="load-more-btn" style="display: none;">
+                Muat Lebih Banyak Gambar
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let isLoading = false;
+
+        // Fungsi untuk menampilkan gambar
+        async function displayPhotos() {
+            if (isLoading) return;
+            
+            const loadingEl = document.getElementById('loading');
+            const errorEl = document.getElementById('error');
+            const galleryEl = document.getElementById('gallery');
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+
+            isLoading = true;
+            loadMoreBtn.disabled = true;
+            loadMoreBtn.textContent = 'Memuat...';
+
+            try {
+                // Memanggil fungsi dari unsplash.js
+                const photos = await getRandomPhotos();
+                
+                // Sembunyikan loading pertama kali
+                loadingEl.style.display = 'none';
+                
+                // Tampilkan tombol load more
+                loadMoreBtn.style.display = 'block';
+                loadMoreBtn.disabled = false;
+                loadMoreBtn.textContent = 'Muat Lebih Banyak Gambar';
+
+                // Tampilkan setiap foto
+                photos.forEach(photo => {
+                    const photoCard = document.createElement('div');
+                    photoCard.className = 'photo-card';
+                    
+                    photoCard.innerHTML = `
+                        <img src="${photo.urls.small}" alt="${photo.alt_description || 'Unsplash Photo'}">
+                        <div class="photo-info">
+                            <div class="author">📷 ${photo.user.name}</div>
+                            <div class="description">${photo.alt_description || 'Beautiful photo from Unsplash'}</div>
+                        </div>
+                    `;
+                    
+                    // Tambahkan event click untuk membuka foto di tab baru
+                    photoCard.addEventListener('click', () => {
+                        window.open(photo.links.html, '_blank');
+                    });
+                    
+                    galleryEl.appendChild(photoCard);
+                });
+
+            } catch (error) {
+                loadingEl.style.display = 'none';
+                errorEl.style.display = 'block';
+                errorEl.textContent = '❌ Gagal memuat gambar: ' + error.message;
+                console.error('Error:', error);
+                loadMoreBtn.disabled = false;
+                loadMoreBtn.textContent = 'Coba Lagi';
+            }
+            
+            isLoading = false;
+        }
+
+        // Event listener untuk tombol load more
+        document.getElementById('loadMoreBtn').addEventListener('click', displayPhotos);
+
+        // Jalankan saat halaman dimuat
+        displayPhotos();
+    </script>
+</body>
+</html>
