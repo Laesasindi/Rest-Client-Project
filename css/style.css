@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #6577c7 0%, #a687c5 100%);
     min-height: 100vh;
     padding: 20px;
 }
@@ -16,22 +16,85 @@ body {
     margin: 0 auto;
 }
 
-header {
-    text-align: center;
-    color: white;
-    margin-bottom: 40px;
-    padding: 20px;
+.header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    gap: 15px;
 }
 
-header h1 {
-    font-size: 2.5em;
-    margin-bottom: 10px;
+.header-left {
+    color: white;
+    text-align: left;
+}
+
+.header-left h1 {
+    font-size: 1.9em;
+    margin-bottom: 4px;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
-header p {
-    font-size: 1.1em;
+.header-left p {
+    font-size: 0.95em;
     opacity: 0.9;
+    margin-top: 0;
+}
+
+.features-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.features-title {
+    font-size: 1.2em;
+    color: white;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.features-grid {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 15px;
+    border-radius: 20px;
+    color: white;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    user-select: none;
+}
+
+.feature-item:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.feature-icon {
+    font-size: 1.2em;
+}
+
+.feature-name {
+    font-weight: 500;
+}
+
+.divider {
+    border: none;
+    height: 2px;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.5), transparent);
+    margin-bottom: 30px;
 }
 
 .loading {
@@ -132,9 +195,36 @@ header p {
 }
 
 @media (max-width: 768px) {
-    header h1 {
+    /* KODE BARU: Responsive untuk Header & Fitur */
+    .header-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+    
+    .header-left h1 {
         font-size: 1.8em;
     }
+    
+    .features-right {
+        align-items: flex-start;
+        width: 100%;
+    }
+    
+    .features-title {
+        font-size: 1em;
+    }
+    
+    .features-grid {
+        justify-content: flex-start;
+        gap: 10px;
+    }
+    
+    .feature-item {
+        font-size: 0.8em;
+        padding: 6px 12px;
+    }
+    /* AKHIR KODE BARU */
     
     .gallery {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));

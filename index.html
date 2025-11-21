@@ -9,10 +9,34 @@
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Meo MEo</h1>
-            <p>Galeri Foto Berkualitas Tinggi dari Unsplash API</p>
-        </header>
+         
+        <div class="header-wrapper">
+            <header class="header-left">
+                <h1>Meo MEo</h1>
+                <p>Awesome Art</p>
+            </header>
+
+            <div class="features-right">
+                <div class="features-grid">
+                    <div class="feature-item" id="homeBtn">
+                        <span class="feature-icon">🏠</span>
+                        <span class="feature-name">Home</span>
+                    </div>
+                    <div class="feature-item" id="trendingBtn">
+                        <span class="feature-icon">🔥</span>
+                        <span class="feature-name">Trending</span>
+                    </div>
+                    <div class="feature-item" id="searchBtn">
+                        <span class="feature-icon">🔍</span>
+                        <span class="feature-name">Search</span>
+                    </div>
+                    <div class="feature-item" id="languageBtn">
+                        <span class="feature-name">Language</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="divider">
 
         <div id="loading" class="loading">Memuat gambar...</div>
         <div id="error" class="error" style="display: none;"></div>
@@ -88,6 +112,28 @@
 
         // Event listener untuk tombol load more
         document.getElementById('loadMoreBtn').addEventListener('click', displayPhotos);
+
+        // KODE BARU: Event listener untuk tombol navigasi
+        document.getElementById('homeBtn').addEventListener('click', () => {
+            // Reload halaman atau scroll ke atas
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            location.reload();
+        });
+
+        document.getElementById('trendingBtn').addEventListener('click', () => {
+            alert('Fitur Trending akan segera hadir! 🔥');
+            // TODO: Implementasi trending photos
+        });
+
+        document.getElementById('searchBtn').addEventListener('click', () => {
+            alert('Fitur Search akan segera hadir! 🔍');
+            // TODO: Implementasi search functionality
+        });
+
+         document.getElementById('languageBtn').addEventListener('click', () => {
+            alert('Fitur Language akan segera hadir! ');
+            // TODO: Implementasi search functionality
+        });
 
         // Jalankan saat halaman dimuat
         displayPhotos();
