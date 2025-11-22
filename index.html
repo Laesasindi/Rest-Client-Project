@@ -5,15 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Unsplash Gallery</title>
     <link rel="stylesheet" href="css/style.css">
-    <script src="Js/unsplash.js"></script>
+    <script src="js/unsplash.js" defer></script>
+
+    <style>
+        /* --- LANGUAGE DROPDOWN DI POJOK KANAN ATAS --- */
+        #languageBox {
+            position: absolute;
+            top: 90px;
+            right: 40px;
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 999;
+        }
+
+        #languageBox select {
+            padding: 7px 10px;
+            border-radius: 8px;
+            border: 1px solid #bbb;
+        }
+    </style>
 </head>
+
 <body>
     <div class="container">
-         
         <div class="header-wrapper">
             <header class="header-left">
                 <h1>Meo MEo</h1>
-                <p>Awesome Art</p>
+                <p id="subtitle">Awesome Art</p>
             </header>
 
             <div class="features-right">
@@ -31,11 +52,27 @@
                         <span class="feature-name">Search</span>
                     </div>
                     <div class="feature-item" id="languageBtn">
+                        <span class="feature-icon">🌐</span>
                         <span class="feature-name">Language</span>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- DROPDOWN LANGUAGE (MUNCUL SAAT DIKLIK) -->
+        <div id="languageBox">
+            <select id="languageSelect">
+                <option value="id">🇮🇩 Indonesia</option>
+                <option value="en">🇬🇧 English</option>
+                <option value="es">🇪🇸 Español</option>
+                <option value="fr">🇫🇷 Français</option>
+                <option value="de">🇩🇪 Deutsch</option>
+                <option value="jp">🇯🇵 日本語</option>
+                <option value="kr">🇰🇷 한국어</option>
+                <option value="cn">🇨🇳 中文</option>
+            </select>
+        </div>
+
         <hr class="divider">
 
         <div id="loading" class="loading">Memuat gambar...</div>
@@ -48,95 +85,5 @@
             </button>
         </div>
     </div>
-
-    <script>
-        let isLoading = false;
-
-        // Fungsi untuk menampilkan gambar
-        async function displayPhotos() {
-            if (isLoading) return;
-            
-            const loadingEl = document.getElementById('loading');
-            const errorEl = document.getElementById('error');
-            const galleryEl = document.getElementById('gallery');
-            const loadMoreBtn = document.getElementById('loadMoreBtn');
-
-            isLoading = true;
-            loadMoreBtn.disabled = true;
-            loadMoreBtn.textContent = 'Memuat...';
-
-            try {
-                // Memanggil fungsi dari unsplash.js
-                const photos = await getRandomPhotos();
-                
-                // Sembunyikan loading pertama kali
-                loadingEl.style.display = 'none';
-                
-                // Tampilkan tombol load more
-                loadMoreBtn.style.display = 'block';
-                loadMoreBtn.disabled = false;
-                loadMoreBtn.textContent = 'Muat Lebih Banyak Gambar';
-
-                // Tampilkan setiap foto
-                photos.forEach(photo => {
-                    const photoCard = document.createElement('div');
-                    photoCard.className = 'photo-card';
-                    
-                    photoCard.innerHTML = `
-                        <img src="${photo.urls.small}" alt="${photo.alt_description || 'Unsplash Photo'}">
-                        <div class="photo-info">
-                            <div class="author">📷 ${photo.user.name}</div>
-                            <div class="description">${photo.alt_description || 'Beautiful photo from Unsplash'}</div>
-                        </div>
-                    `;
-                    
-                    // Tambahkan event click untuk membuka foto di tab baru
-                    photoCard.addEventListener('click', () => {
-                        window.open(photo.links.html, '_blank');
-                    });
-                    
-                    galleryEl.appendChild(photoCard);
-                });
-
-            } catch (error) {
-                loadingEl.style.display = 'none';
-                errorEl.style.display = 'block';
-                errorEl.textContent = '❌ Gagal memuat gambar: ' + error.message;
-                console.error('Error:', error);
-                loadMoreBtn.disabled = false;
-                loadMoreBtn.textContent = 'Coba Lagi';
-            }
-            
-            isLoading = false;
-        }
-
-        // Event listener untuk tombol load more
-        document.getElementById('loadMoreBtn').addEventListener('click', displayPhotos);
-
-        // KODE BARU: Event listener untuk tombol navigasi
-        document.getElementById('homeBtn').addEventListener('click', () => {
-            // Reload halaman atau scroll ke atas
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            location.reload();
-        });
-
-        document.getElementById('trendingBtn').addEventListener('click', () => {
-            alert('Fitur Trending akan segera hadir! 🔥');
-            // TODO: Implementasi trending photos
-        });
-
-        document.getElementById('searchBtn').addEventListener('click', () => {
-            alert('Fitur Search akan segera hadir! 🔍');
-            // TODO: Implementasi search functionality
-        });
-
-         document.getElementById('languageBtn').addEventListener('click', () => {
-            alert('Fitur Language akan segera hadir! ');
-            // TODO: Implementasi search functionality
-        });
-
-        // Jalankan saat halaman dimuat
-        displayPhotos();
-    </script>
 </body>
 </html>
