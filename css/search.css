@@ -1,0 +1,213 @@
+/* ==========================================
+   SEARCH STYLES - Styling untuk fitur pencarian
+   ========================================== */
+
+/* Search Container Styles */
+.search-container {
+    margin-bottom: 30px;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+#searchInput {
+    flex: 1;
+    min-width: 250px;
+    padding: 15px 20px;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+#searchInput:focus {
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    transform: translateY(-2px);
+}
+
+.search-submit-btn, .close-search-btn {
+    padding: 15px 30px;
+    font-size: 1em;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.search-submit-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.search-submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.close-search-btn {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+    color: white;
+}
+
+.close-search-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.search-info {
+    text-align: center;
+    color: white;
+    font-size: 1.1em;
+    margin-top: 15px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+}
+
+/* Dark Mode Support */
+body.dark-mode #searchInput {
+    background: #2d2d44;
+    color: white;
+}
+
+body.dark-mode #searchInput::placeholder {
+    color: #b8b8d1;
+}
+
+/* Quick Search Bubbles */
+.quick-search-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.quick-search-label {
+    color: white;
+    font-size: 1em;
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+.quick-search-bubbles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.quick-search-bubble {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+    color: #667eea;
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 0.95em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    backdrop-filter: blur(5px);
+}
+
+.quick-search-bubble:hover {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    border-color: transparent;
+}
+
+.quick-search-bubble:active {
+    transform: translateY(-1px) scale(1.02);
+}
+
+/* Dark Mode Support for Bubbles */
+body.dark-mode .quick-search-bubble {
+    background: linear-gradient(135deg, rgba(45, 45, 68, 0.9) 0%, rgba(45, 45, 68, 0.7) 100%);
+    color: #8b9cff;
+    border-color: rgba(139, 156, 255, 0.3);
+}
+
+body.dark-mode .quick-search-bubble:hover {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: transparent;
+}
+
+body.dark-mode .quick-search-label {
+    color: #b8b8d1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .search-box {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    #searchInput {
+        width: 100%;
+        min-width: unset;
+    }
+    
+    .search-submit-btn, .close-search-btn {
+        width: 100%;
+    }
+    
+    .quick-search-bubbles {
+        gap: 8px;
+    }
+    
+    .quick-search-bubble {
+        font-size: 0.85em;
+        padding: 8px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    #searchInput {
+        font-size: 1em;
+        padding: 12px 18px;
+    }
+    
+    .search-submit-btn, .close-search-btn {
+        padding: 12px 25px;
+        font-size: 0.95em;
+    }
+    
+    .search-info {
+        font-size: 0.95em;
+    }
+    
+    .quick-search-label {
+        font-size: 0.9em;
+    }
+    
+    .quick-search-bubble {
+        font-size: 0.8em;
+        padding: 7px 14px;
+    }
+}

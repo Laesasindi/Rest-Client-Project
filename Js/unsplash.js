@@ -47,7 +47,14 @@ const translations = {
         loading: "Memuat gambar...",
         loadMore: "Muat Lebih Banyak Gambar",
         awesome: "Seni Keren",
-        defaultPhotoText: "Foto indah dari Unsplash"
+        defaultPhotoText: "Foto indah dari Unsplash",
+        searchPlaceholder: "Cari gambar...",
+        searchButton: "🔍 Cari",
+        closeSearch: "✖ Tutup",
+        searchResults: "Hasil pencarian untuk",
+        noResults: "Tidak ada hasil untuk",
+        searchError: "Gagal mencari gambar",
+        quickSearch: "Pencarian Cepat:"
     },
     en: {
         home: "Home",
@@ -59,7 +66,14 @@ const translations = {
         loading: "Loading images...",
         loadMore: "Load More Images",
         awesome: "Awesome Art",
-        defaultPhotoText: "Beautiful photo from Unsplash"
+        defaultPhotoText: "Beautiful photo from Unsplash",
+        searchPlaceholder: "Search images...",
+        searchButton: "🔍 Search",
+        closeSearch: "✖ Close",
+        searchResults: "Search results for",
+        noResults: "No results for",
+        searchError: "Failed to search images",
+        quickSearch: "Quick Search:"
     },
     es: {
         home: "Inicio",
@@ -71,7 +85,14 @@ const translations = {
         loading: "Cargando imágenes...",
         loadMore: "Cargar más imágenes",
         awesome: "Arte Genial",
-        defaultPhotoText: "Hermosa foto de Unsplash"
+        defaultPhotoText: "Hermosa foto de Unsplash",
+        searchPlaceholder: "Buscar imágenes...",
+        searchButton: "🔍 Buscar",
+        closeSearch: "✖ Cerrar",
+        searchResults: "Resultados de búsqueda para",
+        noResults: "No hay resultados para",
+        searchError: "Error al buscar imágenes",
+        quickSearch: "Búsqueda Rápida:"
     },
     fr: {
         home: "Accueil",
@@ -83,7 +104,14 @@ const translations = {
         loading: "Chargement des images...",
         loadMore: "Charger plus d'images",
         awesome: "Art Génial",
-        defaultPhotoText: "Belle photo de Unsplash"
+        defaultPhotoText: "Belle photo de Unsplash",
+        searchPlaceholder: "Rechercher des images...",
+        searchButton: "🔍 Rechercher",
+        closeSearch: "✖ Fermer",
+        searchResults: "Résultats de recherche pour",
+        noResults: "Aucun résultat pour",
+        searchError: "Échec de la recherche d'images",
+        quickSearch: "Recherche Rapide:"
     },
     de: {
         home: "Startseite",
@@ -95,7 +123,14 @@ const translations = {
         loading: "Bilder werden geladen...",
         loadMore: "Weitere Bilder laden",
         awesome: "Tolle Kunst",
-        defaultPhotoText: "Schönes Foto von Unsplash"
+        defaultPhotoText: "Schönes Foto von Unsplash",
+        searchPlaceholder: "Bilder suchen...",
+        searchButton: "🔍 Suchen",
+        closeSearch: "✖ Schließen",
+        searchResults: "Suchergebnisse für",
+        noResults: "Keine Ergebnisse für",
+        searchError: "Fehler beim Suchen von Bildern",
+        quickSearch: "Schnellsuche:"
     },
     jp: {
         home: "ホーム",
@@ -107,7 +142,14 @@ const translations = {
         loading: "画像を読み込み中...",
         loadMore: "さらに画像を読み込む",
         awesome: "素晴らしいアート",
-        defaultPhotoText: "Unsplashの美しい写真"
+        defaultPhotoText: "Unsplashの美しい写真",
+        searchPlaceholder: "画像を検索...",
+        searchButton: "🔍 検索",
+        closeSearch: "✖ 閉じる",
+        searchResults: "検索結果",
+        noResults: "結果なし",
+        searchError: "画像の検索に失敗しました",
+        quickSearch: "クイック検索:"
     },
     kr: {
         home: "홈",
@@ -119,7 +161,14 @@ const translations = {
         loading: "이미지 로딩 중...",
         loadMore: "더 많은 이미지 불러오기",
         awesome: "멋진 아트",
-        defaultPhotoText: "Unsplash의 아름다운 사진"
+        defaultPhotoText: "Unsplash의 아름다운 사진",
+        searchPlaceholder: "이미지 검색...",
+        searchButton: "🔍 검색",
+        closeSearch: "✖ 닫기",
+        searchResults: "검색 결과",
+        noResults: "결과 없음",
+        searchError: "이미지 검색 실패",
+        quickSearch: "빠른 검색:"
     },
     cn: {
         home: "首页",
@@ -131,7 +180,14 @@ const translations = {
         loading: "正在加载图片...",
         loadMore: "加载更多图片",
         awesome: "精彩艺术",
-        defaultPhotoText: "来自Unsplash的美丽照片"
+        defaultPhotoText: "来自Unsplash的美丽照片",
+        searchPlaceholder: "搜索图片...",
+        searchButton: "🔍 搜索",
+        closeSearch: "✖ 关闭",
+        searchResults: "搜索结果",
+        noResults: "无结果",
+        searchError: "搜索图片失败",
+        quickSearch: "快速搜索:"
     }
 };
 
@@ -142,48 +198,72 @@ let isDarkMode = localStorage.getItem("darkMode") === "true";
 // ==========================================
 // Fungsi render foto ke gallery
 // ==========================================
-async function displayPhotos() {
+async function displayPhotos(append = false) {
     const loadingEl = document.getElementById('loading');
     const errorEl = document.getElementById('error');
     const galleryEl = document.getElementById('gallery');
     const loadMoreBtn = document.getElementById('loadMoreBtn');
+    const searchInfo = document.getElementById('searchInfo');
+
+    if (!append) {
+        galleryEl.innerHTML = '';
+    }
 
     loadingEl.style.display = 'block';
     errorEl.style.display = 'none';
     loadMoreBtn.style.display = 'none';
 
     try {
-        const photos = await getRandomPhotos(9);
+        let photos;
+        
+        // Cek apakah dalam mode search (dari search.js)
+        if (window.isSearchMode && window.currentSearchQuery) {
+            const data = await searchPhotos(window.currentSearchQuery, window.currentPage, 9);
+            photos = data.results;
+            
+            // Update search info
+            if (photos.length > 0) {
+                searchInfo.style.display = 'block';
+                searchInfo.textContent = `${translations[currentLang].searchResults} "${window.currentSearchQuery}" - ${data.total} ${translations[currentLang].defaultPhotoText}`;
+            } else {
+                searchInfo.style.display = 'block';
+                searchInfo.textContent = `${translations[currentLang].noResults} "${window.currentSearchQuery}"`;
+            }
+        } else {
+            photos = await getRandomPhotos(9);
+            searchInfo.style.display = 'none';
+        }
 
         loadingEl.style.display = 'none';
-        loadMoreBtn.style.display = 'block';
-        loadMoreBtn.disabled = false;
-        loadMoreBtn.textContent = translations[currentLang].loadMore;
+        
+        if (photos.length > 0) {
+            loadMoreBtn.style.display = 'block';
+            loadMoreBtn.disabled = false;
+            loadMoreBtn.textContent = translations[currentLang].loadMore;
+        }
 
         photos.forEach(photo => {
             const photoCard = document.createElement('div');
             photoCard.className = 'photo-card';
         
-            // Gunakan alt_description jika ada, kalau tidak pakai defaultPhotoText
             const desc = photo.alt_description || translations[currentLang].defaultPhotoText;
             
             photoCard.innerHTML = `
-            <img src="${photo.urls.small}" alt="${desc}">
-            <div class="photo-info">
-            <div class="author">📷 ${photo.user.name}</div>
-            <div class="description">${desc}</div>
-        </div>
-    `;
+                <img src="${photo.urls.small}" alt="${desc}">
+                <div class="photo-info">
+                    <div class="author">📷 ${photo.user.name}</div>
+                    <div class="description">${desc}</div>
+                </div>
+            `;
 
-    photoCard.addEventListener('click', () => window.open(photo.links.html, '_blank'));
-    galleryEl.appendChild(photoCard);
-});
-
+            photoCard.addEventListener('click', () => window.open(photo.links.html, '_blank'));
+            galleryEl.appendChild(photoCard);
+        });
 
     } catch (err) {
         loadingEl.style.display = 'none';
         errorEl.style.display = 'block';
-        errorEl.textContent = '❌ Gagal memuat gambar: ' + err.message;
+        errorEl.textContent = '❌ ' + translations[currentLang].searchError + ': ' + err.message;
         console.error(err);
         loadMoreBtn.disabled = false;
         loadMoreBtn.textContent = 'Coba Lagi';
@@ -203,6 +283,16 @@ function applyLanguage() {
     document.getElementById("subtitle").textContent = t.awesome;
     document.getElementById("loading").textContent = t.loading;
     document.getElementById("loadMoreBtn").textContent = t.loadMore;
+    document.getElementById("searchInput").placeholder = t.searchPlaceholder;
+    document.getElementById("searchSubmitBtn").textContent = t.searchButton;
+    document.getElementById("closeSearchBtn").textContent = t.closeSearch;
+    
+    // Update quick search label
+    const quickSearchLabel = document.querySelector('.quick-search-label');
+    if (quickSearchLabel) {
+        quickSearchLabel.textContent = t.quickSearch;
+    }
+    
     updateThemeButton();
 }
 
@@ -241,7 +331,14 @@ function updateThemeButton() {
 // ==========================================
 // Event listeners
 // ==========================================
-document.getElementById('loadMoreBtn').addEventListener('click', displayPhotos);
+document.getElementById('loadMoreBtn').addEventListener('click', () => {
+    if (window.isSearchMode) {
+        window.currentPage++;
+        displayPhotos(true);
+    } else {
+        displayPhotos(true);
+    }
+});
 
 document.getElementById('homeBtn').addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -250,10 +347,6 @@ document.getElementById('homeBtn').addEventListener('click', () => {
 
 document.getElementById('trendingBtn').addEventListener('click', () => {
     alert('Fitur Trending akan segera hadir! 🔥');
-});
-
-document.getElementById('searchBtn').addEventListener('click', () => {
-    alert('Fitur Search akan segera hadir! 🔍');
 });
 
 document.getElementById('languageBtn').addEventListener('click', () => {
@@ -276,6 +369,14 @@ document.getElementById("languageSelect").addEventListener("change", (e) => {
         const imgEl = card.querySelector("img");
         imgEl.alt = alt || translations[currentLang].defaultPhotoText;
     });
+    
+    // Update quick search bubbles jika search box terbuka
+    const searchContainer = document.getElementById('searchContainer');
+    if (searchContainer && searchContainer.style.display === 'block') {
+        if (typeof renderQuickSearchBubbles === 'function') {
+            renderQuickSearchBubbles();
+        }
+    }
 });
 
 document.getElementById('themeBtn').addEventListener('click', toggleDarkMode);
