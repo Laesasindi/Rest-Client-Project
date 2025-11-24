@@ -42,6 +42,8 @@ const translations = {
         trending: "Populer",
         search: "Cari",
         language: "Bahasa",
+        darkMode: "Mode Gelap",
+        lightMode: "Mode Terang",
         loading: "Memuat gambar...",
         loadMore: "Muat Lebih Banyak Gambar",
         awesome: "Seni Keren",
@@ -52,6 +54,8 @@ const translations = {
         trending: "Trending",
         search: "Search",
         language: "Language",
+        darkMode: "Dark Mode",
+        lightMode: "Light Mode",
         loading: "Loading images...",
         loadMore: "Load More Images",
         awesome: "Awesome Art",
@@ -62,6 +66,8 @@ const translations = {
         trending: "Tendencias",
         search: "Buscar",
         language: "Idioma",
+        darkMode: "Modo Oscuro",
+        lightMode: "Modo Claro",
         loading: "Cargando imágenes...",
         loadMore: "Cargar más imágenes",
         awesome: "Arte Genial",
@@ -72,6 +78,8 @@ const translations = {
         trending: "Tendance",
         search: "Recherche",
         language: "Langue",
+        darkMode: "Mode Sombre",
+        lightMode: "Mode Clair",
         loading: "Chargement des images...",
         loadMore: "Charger plus d'images",
         awesome: "Art Génial",
@@ -82,6 +90,8 @@ const translations = {
         trending: "Beliebt",
         search: "Suche",
         language: "Sprache",
+        darkMode: "Dunkelmodus",
+        lightMode: "Hellmodus",
         loading: "Bilder werden geladen...",
         loadMore: "Weitere Bilder laden",
         awesome: "Tolle Kunst",
@@ -92,6 +102,8 @@ const translations = {
         trending: "人気",
         search: "検索",
         language: "言語",
+        darkMode: "ダークモード",
+        lightMode: "ライトモード",
         loading: "画像を読み込み中...",
         loadMore: "さらに画像を読み込む",
         awesome: "素晴らしいアート",
@@ -102,6 +114,8 @@ const translations = {
         trending: "인기",
         search: "검색",
         language: "언어",
+        darkMode: "다크 모드",
+        lightMode: "라이트 모드",
         loading: "이미지 로딩 중...",
         loadMore: "더 많은 이미지 불러오기",
         awesome: "멋진 아트",
@@ -112,6 +126,8 @@ const translations = {
         trending: "热门",
         search: "搜索",
         language: "语言",
+        darkMode: "深色模式",
+        lightMode: "浅色模式",
         loading: "正在加载图片...",
         loadMore: "加载更多图片",
         awesome: "精彩艺术",
@@ -121,6 +137,7 @@ const translations = {
 
 
 let currentLang = localStorage.getItem("appLang") || "id";
+let isDarkMode = localStorage.getItem("darkMode") === "true";
 
 // ==========================================
 // Fungsi render foto ke gallery
@@ -186,6 +203,39 @@ function applyLanguage() {
     document.getElementById("subtitle").textContent = t.awesome;
     document.getElementById("loading").textContent = t.loading;
     document.getElementById("loadMoreBtn").textContent = t.loadMore;
+    updateThemeButton();
+}
+
+// ==========================================
+// Fungsi toggle dark mode
+// ==========================================
+function toggleDarkMode() {
+    isDarkMode = !isDarkMode;
+    localStorage.setItem("darkMode", isDarkMode);
+    applyTheme();
+}
+
+function applyTheme() {
+    if (isDarkMode) {
+        document.body.classList.add("dark-mode");
+    } else {
+        document.body.classList.remove("dark-mode");
+    }
+    updateThemeButton();
+}
+
+function updateThemeButton() {
+    const t = translations[currentLang];
+    const themeBtn = document.querySelector("#themeBtn .feature-name");
+    const themeIcon = document.querySelector("#themeBtn .feature-icon");
+    
+    if (isDarkMode) {
+        themeBtn.textContent = t.lightMode;
+        themeIcon.textContent = "☀️";
+    } else {
+        themeBtn.textContent = t.darkMode;
+        themeIcon.textContent = "🌙";
+    }
 }
 
 // ==========================================
@@ -228,10 +278,11 @@ document.getElementById("languageSelect").addEventListener("change", (e) => {
     });
 });
 
-
+document.getElementById('themeBtn').addEventListener('click', toggleDarkMode);
 
 // ==========================================
 // Jalankan pertama kali
 // ==========================================
+applyTheme();
 applyLanguage();
 displayPhotos();
