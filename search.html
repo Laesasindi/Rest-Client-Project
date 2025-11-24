@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Unsplash Gallery</title>
+    <title>Search - Unsplash Gallery</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/search.css">
     <script src="js/unsplash.js" defer></script>
     <script src="js/search.js" defer></script>
+    <script src="js/search-page.js" defer></script>
 
     <style>
         /* --- LANGUAGE DROPDOWN DI POJOK KANAN ATAS --- */
@@ -28,6 +29,41 @@
             border-radius: 8px;
             border: 1px solid #bbb;
         }
+
+        /* Search Page Specific Styles */
+        .search-page-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .search-page-header h2 {
+            color: white;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .back-to-home {
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-to-home:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Always show search container on this page */
+        #searchContainer {
+            display: block !important;
+        }
     </style>
 </head>
 
@@ -36,7 +72,7 @@
         <div class="header-wrapper">
             <header class="header-left">
                 <h1>Meo MEo</h1>
-                <p id="subtitle">Awesome Art</p>
+                <p id="subtitle">Search Gallery</p>
             </header>
 
             <div class="features-right">
@@ -49,7 +85,7 @@
                         <span class="feature-icon">🔥</span>
                         <span class="feature-name">Trending</span>
                     </div>
-                    <div class="feature-item" id="searchBtn">
+                    <div class="feature-item active">
                         <span class="feature-icon">🔍</span>
                         <span class="feature-name">Search</span>
                     </div>
@@ -81,26 +117,23 @@
 
         <hr class="divider">
 
-        <!-- Search Box -->
-        <div id="searchContainer" class="search-container" style="display: none;">
+        <!-- Search Page Header -->
+        <div class="search-page-header">
+            <a href="index.html" class="back-to-home">← Kembali ke Home</a>
+            <h2>🔍 Cari Gambar Favorit Anda</h2>
+        </div>
+
+        <!-- Search Box - Always Visible -->
+        <div id="searchContainer" class="search-container">
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Cari gambar..." />
+                <input type="text" id="searchInput" placeholder="Cari gambar..." autofocus />
                 <button id="searchSubmitBtn" class="search-submit-btn">🔍 Cari</button>
-                <button id="closeSearchBtn" class="close-search-btn">✖ Tutup</button>
+                <button id="clearSearchBtn" class="close-search-btn">🔄 Reset</button>
             </div>
-            
-            <!-- Quick Search Bubbles -->
-            <div class="quick-search-container">
-                <div class="quick-search-label">Pencarian Cepat:</div>
-                <div class="quick-search-bubbles" id="quickSearchBubbles">
-                    <!-- Bubbles akan diisi oleh JavaScript -->
-                </div>
-            </div>
-            
             <div id="searchInfo" class="search-info" style="display: none;"></div>
         </div>
 
-        <div id="loading" class="loading">Memuat gambar...</div>
+        <div id="loading" class="loading" style="display: none;">Memuat gambar...</div>
         <div id="error" class="error" style="display: none;"></div>
         <div id="gallery" class="gallery"></div>
         
