@@ -9,6 +9,36 @@ body {
     background: linear-gradient(135deg, #6577c7 0%, #a687c5 100%);
     min-height: 100vh;
     padding: 20px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+body.dark-mode .photo-card {
+    background: #2d2d44;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+}
+
+body.dark-mode .photo-info .author {
+    color: #8b9cff;
+}
+
+body.dark-mode .photo-info .description {
+    color: #b8b8d1;
+}
+
+body.dark-mode #languageBox {
+    background: #2d2d44;
+    color: white;
+}
+
+body.dark-mode #languageBox select {
+    background: #1a1a2e;
+    color: white;
+    border-color: #444;
 }
 
 .container {
