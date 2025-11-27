@@ -3,44 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search - Unsplash Gallery</title>
+    <title>Trending - Unsplash Gallery</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/search.css">
-    <script src="js/unsplash.js" defer></script>
-    <script src="js/search.js" defer></script>
-    <script src="js/search-page.js" defer></script>
+    <script src="Js/unsplash.js" defer></script>
+    <script src="Js/trending.js" defer></script>
 
     <style>
-        /* --- LANGUAGE DROPDOWN DI POJOK KANAN ATAS --- */
-        #languageBox {
-            position: absolute;
-            top: 90px;
-            right: 40px;
-            background: white;
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            display: none;
-            z-index: 999;
-        }
+        /* Trending page specific tweaks */
+        #searchContainer { display: none !important; }
 
-        #languageBox select {
-            padding: 7px 10px;
-            border-radius: 8px;
-            border: 1px solid #bbb;
-        }
-
-        /* Search Page Specific Styles */
-        .search-page-header {
+        .trending-header {
             text-align: center;
             margin-bottom: 20px;
-        }
-
-        .search-page-header h2 {
             color: white;
-            font-size: 1.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         .back-to-home {
@@ -55,15 +31,7 @@
             backdrop-filter: blur(10px);
         }
 
-        .back-to-home:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-
-        /* Always show search container on this page */
-        #searchContainer {
-            display: block !important;
-        }
+        .back-to-home:hover { transform: translateY(-2px); }
     </style>
 </head>
 
@@ -72,7 +40,7 @@
         <div class="header-wrapper">
             <header class="header-left">
                 <h1>Meo MEo</h1>
-                <p id="subtitle">Search Gallery</p>
+                <p id="subtitle">Trending Gallery</p>
             </header>
 
             <div class="features-right">
@@ -81,11 +49,11 @@
                         <span class="feature-icon">🏠</span>
                         <span class="feature-name">Home</span>
                     </div>
-                    <div class="feature-item" id="trendingBtn">
+                    <div class="feature-item active" id="trendingBtn">
                         <span class="feature-icon">🔥</span>
                         <span class="feature-name">Trending</span>
                     </div>
-                    <div class="feature-item active">
+                    <div class="feature-item" id="searchBtn">
                         <span class="feature-icon">🔍</span>
                         <span class="feature-name">Search</span>
                     </div>
@@ -101,7 +69,6 @@
             </div>
         </div>
 
-        <!-- DROPDOWN LANGUAGE (MUNCUL SAAT DIKLIK) -->
         <div id="languageBox">
             <select id="languageSelect">
                 <option value="id">🇮🇩 Indonesia</option>
@@ -117,30 +84,30 @@
 
         <hr class="divider">
 
-        <!-- Search Page Header -->
-        <div class="search-page-header">
-            <a href="index.html" class="back-to-home"></a>
-            <h2>🔍 Cari Gambar Favorit Anda</h2>
+        <div class="trending-header">
+            <h2>🔥 Foto-foto Populer Hari Ini</h2>
         </div>
 
-        <!-- Search Box - Always Visible -->
-        <div id="searchContainer" class="search-container">
+        <!-- Hidden search container present so shared scripts won't error (they expect these IDs) -->
+        <div id="searchContainer" class="search-container" style="display: none;">
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Cari gambar..." autofocus />
+                <input type="text" id="searchInput" placeholder="Cari gambar..." />
                 <button id="searchSubmitBtn" class="search-submit-btn">🔍 Cari</button>
-                <button id="clearSearchBtn" class="close-search-btn">🔄 Reset</button>
+                <button id="closeSearchBtn" class="close-search-btn">✖ Tutup</button>
+            </div>
+            <div class="quick-search-container">
+                <div class="quick-search-label">Pencarian Cepat:</div>
+                <div class="quick-search-bubbles" id="quickSearchBubbles"></div>
             </div>
             <div id="searchInfo" class="search-info" style="display: none;"></div>
         </div>
 
-        <div id="loading" class="loading" style="display: none;">Memuat gambar...</div>
+        <div id="loading" class="loading">Memuat gambar...</div>
         <div id="error" class="error" style="display: none;"></div>
         <div id="gallery" class="gallery"></div>
-        
+
         <div class="load-more-container">
-            <button id="loadMoreBtn" class="load-more-btn" style="display: none;">
-                Muat Lebih Banyak Gambar
-            </button>
+            <button id="loadMoreBtn" class="load-more-btn" style="display: none;">Muat Lebih Banyak Gambar</button>
         </div>
     </div>
 </body>

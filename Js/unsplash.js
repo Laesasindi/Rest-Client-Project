@@ -346,7 +346,8 @@ document.getElementById('homeBtn').addEventListener('click', () => {
 });
 
 document.getElementById('trendingBtn').addEventListener('click', () => {
-    alert('Fitur Trending akan segera hadir! 🔥');
+    location.href = 'trending.html';
+    //alert('Fitur Trending akan segera hadir! 🔥');
 });
 
 document.getElementById('languageBtn').addEventListener('click', () => {
